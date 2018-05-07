@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAPInsurance.API", "GapInsurance.API\GAPInsurance.API.csproj", "{087B5F41-E7CF-4EBF-BEB3-00DD39AC746B}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{1B46E6AF-5738-4A3C-A807-829DDE6BC22A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAPInsurance.Domain", "GAPInsurance.Domain\GAPInsurance.Domain.csproj", "{A7E2F2BC-0A31-4B96-A561-771AB0B77269}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAPInsurance.Domain.Tests", "GAPInsurance.Domain.Tests\GAPInsurance.Domain.Tests.csproj", "{19F82CF4-791D-4FB1-80D2-06999E9D54E1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{087B5F41-E7CF-4EBF-BEB3-00DD39AC746B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{087B5F41-E7CF-4EBF-BEB3-00DD39AC746B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{087B5F41-E7CF-4EBF-BEB3-00DD39AC746B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{087B5F41-E7CF-4EBF-BEB3-00DD39AC746B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B46E6AF-5738-4A3C-A807-829DDE6BC22A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B46E6AF-5738-4A3C-A807-829DDE6BC22A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B46E6AF-5738-4A3C-A807-829DDE6BC22A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B46E6AF-5738-4A3C-A807-829DDE6BC22A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7E2F2BC-0A31-4B96-A561-771AB0B77269}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7E2F2BC-0A31-4B96-A561-771AB0B77269}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7E2F2BC-0A31-4B96-A561-771AB0B77269}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7E2F2BC-0A31-4B96-A561-771AB0B77269}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19F82CF4-791D-4FB1-80D2-06999E9D54E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19F82CF4-791D-4FB1-80D2-06999E9D54E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19F82CF4-791D-4FB1-80D2-06999E9D54E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19F82CF4-791D-4FB1-80D2-06999E9D54E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8CBF2822-D263-4628-A18B-6C405674B974}
+	EndGlobalSection
+EndGlobal

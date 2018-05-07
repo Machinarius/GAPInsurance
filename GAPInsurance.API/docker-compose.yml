@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  gapinsurance.api:
+    image: gapinsuranceapi
+    build:
+      context: .
+      dockerfile: GapInsurance.API\Dockerfile
