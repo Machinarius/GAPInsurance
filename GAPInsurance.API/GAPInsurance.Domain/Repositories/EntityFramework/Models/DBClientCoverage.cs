@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GAPInsurance.Domain.Repositories.EntityFramework.Models {
+  [Table("ClientPolicies")]
   public class DBClientCoverage {
     public Guid ClientId { get; set; }
     public Guid PolicyId { get; set; }

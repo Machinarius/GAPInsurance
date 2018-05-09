@@ -1,9 +1,11 @@
 ﻿using GAPInsurance.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace GAPInsurance.Domain.Repositories.EntityFramework.Models {
+  [Table("Policies")]
   public class DBInsurancePolicy {
     public Guid Id { get; set; }
     public string Name { get; set; }

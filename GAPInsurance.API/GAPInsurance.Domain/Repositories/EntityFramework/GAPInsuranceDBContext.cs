@@ -40,13 +40,12 @@ namespace GAPInsurance.Domain.Repositories.EntityFramework {
 
   public class GAPInsuranceDbContextFactory : IDesignTimeDbContextFactory<GAPInsuranceDBContext> {
     public GAPInsuranceDBContext CreateDbContext(string[] args) {
-      if (args.Length < 1) {
-        throw new InvalidOperationException("Cannot create the DBContext without a connection string argument");
+      var connectionString = Environment.GetEnvironmentVariable("GAP_DB");
+      if (string.IsNullOrEmpty(connectionString)) {
+        throw new InvalidOperationException("Cannot create the DBContext without a connection string in the 'GAP_DB' environment variable");
       }
 
-      var connectionString = args[0];
       Console.WriteLine($"Using connection string: '{connectionString}'");
-
       var options = new DbContextOptionsBuilder<GAPInsuranceDBContext>()
         .UseSqlServer(connectionString)
         .Options;
