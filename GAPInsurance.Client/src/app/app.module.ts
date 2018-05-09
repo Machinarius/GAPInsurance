@@ -10,6 +10,7 @@ import { LandingComponent } from './landing/landing.component';
 import { EntryPointComponent } from './entrypoint/entrypoint.component';
 import { NotFoundComponent } from './notfound/notfound.component';
 import { AuthService } from '../services/auth.service';
+import { AuthCallbackComponent } from './authcallback/authcallback.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { AuthService } from '../services/auth.service';
     AppComponent,
     LandingComponent,
     EntryPointComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    AuthCallbackComponent
   ],
   imports: [
     BrowserModule,

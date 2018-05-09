@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  auth0Config: {
+    clientID: 'JDiNJXS0iHGb2EFceFANkMwprc74bw5l',
+    domain: 'machinarius.auth0.com',
+    responseType: 'token id_token',
+    audience: 'https://machinarius.auth0.com/userinfo',
+    redirectUri: 'http://localhost:4200/auth-callback',
+    scope: 'openid'
+  }
 };
 
 /*
