@@ -12,7 +12,7 @@ namespace GAPInsurance.Domain.Models {
     public float PremiumCostInDollars { get; }
     public RiskLevel InsuredRiskLevel { get; }
 
-    public virtual IEnumerable<Client> CoveredClients { get; }
+    public IEnumerable<Client> CoveredClients { get; }
 
     public InsurancePolicy(Guid id, string name, string description, IDictionary<InsuranceCoverage, float> coveragePercentages, 
                            DateTime coverageStartDate, int coverageLengthInMonths, float premiumCostInDollars, 
