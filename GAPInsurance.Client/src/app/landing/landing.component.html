@@ -1,0 +1,18 @@
+<mat-card class="hero-card">
+  <h2>GAP Insurance</h2>
+  <h4>Ensure your growth with us</h4>
+
+  <p>Employee Login</p>
+
+  <div>
+    <mat-form-field>
+      <input matInput placeholder="Username" [(ngModel)]="username">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Password" type="password" [(ngModel)]="password">
+    </mat-form-field>
+  </div>
+
+  <button mat-raised-button (click)="login()">Login</button>
+</mat-card>
+  

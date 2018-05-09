@@ -1,0 +1,11 @@
+.hero-card {
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
+
+  @media screen and (min-width: 800px) {
+    width: 700px;
+    margin: 25px auto;
+  }
+}
+  
