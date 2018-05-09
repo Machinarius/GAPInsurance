@@ -1,5 +1,10 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Inject } from "@angular/core";
 import { Router } from "@angular/router";
+import {
+  HttpInterceptor, HttpRequest, HttpHandler, HttpSentEvent,
+  HttpHeaderResponse, HttpProgressEvent, HttpResponse,
+  HttpUserEvent, HttpEvent
+} from '@angular/common/http';
 
 import { environment } from "../environments/environment";
 
@@ -7,6 +12,8 @@ import { GAPUser } from "../models/gapuser";
 
 import * as auth0 from 'auth0-js';
 import * as jwtDecode from 'jwt-decode';
+
+import { Observable } from "rxjs";
 
 @Injectable()
 export class AuthService {
@@ -94,6 +101,15 @@ export class AuthService {
     return user;
   }
 
+  public currentIdToken(): string {
+    if (!this.userIsLoggedIn()) {
+      throw "Cannot emit an id token if the user has not logged in";
+    }
+
+    let idToken = localStorage.getItem(this.Constants.IdTokenKey);
+    return idToken;
+  }
+
   private loginInternal(email: string, password: string): Promise<auth0.Auth0Error> {
     return new Promise((resolve, reject) => {
       this.webAuth.login({
@@ -114,5 +130,25 @@ export class AuthService {
         }
       })
     })
+  }
+}
+
+@Injectable()
+export class BearerHttpInterceptor implements HttpInterceptor {
+  constructor(private authService: AuthService) { }
+
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (!this.authService.userIsLoggedIn()) {
+      return next.handle(req);
+    }
+
+    let idToken = this.authService.currentIdToken();
+    let authenticatedRequest = req.clone({
+      setHeaders: {
+        "Authorization": `Bearer ${idToken}`
+      }
+    });
+
+    return next.handle(authenticatedRequest);
   }
 }

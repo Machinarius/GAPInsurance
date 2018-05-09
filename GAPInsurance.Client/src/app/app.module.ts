@@ -9,9 +9,9 @@ import { AppMaterialModule } from './app.material';
 import { LandingComponent } from './landing/landing.component';
 import { EntryPointComponent } from './entrypoint/entrypoint.component';
 import { NotFoundComponent } from './notfound/notfound.component';
-import { AuthService } from '../services/auth.service';
+import { AuthService, BearerHttpInterceptor } from '../services/auth.service';
 import { AuthCallbackComponent } from './authcallback/authcallback.component';
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -28,9 +28,11 @@ import { AuthCallbackComponent } from './authcallback/authcallback.component';
     AppRoutingModule,
     FormsModule
   ],
-  providers: [
-    AuthService
-  ],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: BearerHttpInterceptor,
+    multi: true
+  }, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
