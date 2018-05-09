@@ -10,5 +10,9 @@ namespace GAPInsurance.IntegrationTests.Pages {
     }
 
     public IWebElement CreatePolicyButton => webDriver.FindElement(By.Id("createPolicyButton"));
+
+    public IWebElement GetPolicyDetailsLink(string policyName) {
+      return webDriver.FindElement(By.LinkText(policyName));
+    }
   }
 }

@@ -8,11 +8,16 @@ using OpenQA.Selenium.Support.UI;
 using Xunit;
 
 namespace GAPInsurance.IntegrationTests {
-  public class LoginTests {
+  public class LoginTests : IDisposable {
     private readonly IWebDriver webDriver;
 
     public LoginTests() {
       webDriver = TestHarness.CreateWebDriver();
+    }
+
+    public void Dispose() {
+      webDriver.Close();
+      webDriver.Dispose();
     }
 
     [Fact]
