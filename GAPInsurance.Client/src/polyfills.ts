@@ -78,3 +78,6 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+ // workaround for https://github.com/auth0/auth0.js/issues/753
+(window as any).global = window;

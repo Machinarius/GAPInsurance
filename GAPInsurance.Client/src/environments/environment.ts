@@ -10,7 +10,8 @@ export const environment = {
     responseType: 'token id_token',
     audience: 'https://machinarius.auth0.com/userinfo',
     redirectUri: 'http://localhost:4200/auth-callback',
-    scope: 'openid'
+    scope: 'openid profile email',
+    realm: 'Username-Password-Authentication'
   }
 };
 

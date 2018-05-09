@@ -1,11 +1,22 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+
 import { environment } from "../environments/environment";
+
+import { GAPUser } from "../models/gapuser";
+
 import * as auth0 from 'auth0-js';
+import * as jwtDecode from 'jwt-decode';
 
 @Injectable()
 export class AuthService {
   private webAuth: auth0.WebAuth;
+
+  private Constants = {
+    AccessTokenKey: "access_token",
+    IdTokenKey: "id_token",
+    ExpirationDateKey: "expiration_date"
+  };
 
   constructor(
     private router: Router
@@ -30,12 +41,63 @@ export class AuthService {
       throw 'Unknown error during auth0 callback execution';
     }
 
-    
+    let expirationDate = (authResult.expiresIn * 1000) + new Date().getTime();
+    let accessToken = authResult.accessToken;
+    let idToken = authResult.idToken;
+
+    localStorage.setItem(this.Constants.AccessTokenKey, accessToken);
+    localStorage.setItem(this.Constants.ExpirationDateKey, expirationDate.toString());
+    localStorage.setItem(this.Constants.IdTokenKey, idToken);
+
+    this.router.navigateByUrl("/dashboard");
+  }
+
+  public logout() {
+    localStorage.setItem(this.Constants.AccessTokenKey, null);
+    localStorage.setItem(this.Constants.ExpirationDateKey, null);
+    localStorage.setItem(this.Constants.IdTokenKey, null);
+
+    this.router.navigateByUrl("/");
+  }
+
+  public userIsLoggedIn(): boolean {
+    var idToken = localStorage.getItem(this.Constants.IdTokenKey);
+    if (!idToken) {
+      return false;
+    }
+
+    var expirationDateString = localStorage.getItem(this.Constants.ExpirationDateKey);
+    if (!expirationDateString) {
+      return false;
+    }
+
+    var expirationDate = parseInt(expirationDateString);
+    if (expirationDate < new Date().getTime()) {
+      return false;
+    }
+
+    return true;
+  }
+
+  public currentUserProfile(): GAPUser {
+    if (!this.userIsLoggedIn()) {
+      throw "Cannot read the profile when there is no user";
+    }
+
+    let idToken = localStorage.getItem(this.Constants.IdTokenKey);
+    let idPayload = jwtDecode(idToken);
+
+    let name = idPayload['nickname'];
+    let email = idPayload['email'];
+    let user = new GAPUser(name, email);
+
+    return user;
   }
 
   private loginInternal(email: string, password: string): Promise<auth0.Auth0Error> {
     return new Promise((resolve, reject) => {
       this.webAuth.login({
+        realm: environment.auth0Config.realm,
         email: email,
         password: password
       }, reject);
@@ -52,10 +114,5 @@ export class AuthService {
         }
       })
     })
-  }
-
-  public userIsLoggedIn(): boolean {
-    // TODO
-    return false;
   }
 }

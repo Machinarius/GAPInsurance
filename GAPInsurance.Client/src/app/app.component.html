@@ -3,7 +3,22 @@
 
   <!-- This fills the remaining space of the current row -->
   <span class="fill-toolbar"></span>
+
+  <div *ngIf="user" class="identity-container">
+    <span class="mat-body-2" id="userNameLabel">{{user.Name}}</span><br>
+    <span class="mat-caption" id="userEmailLabel">{{user.Email}}</span>
+  </div>
+
+  <mat-menu #appMenu="matMenu">
+    <button mat-menu-item (click)="onLogoutClicked()">Logout</button>
+  </mat-menu>
+
+  <button [style.visibility]="user ? 'visible' : 'hidden'"
+          mat-icon-button [matMenuTriggerFor]="appMenu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
 </mat-toolbar>
+
 <div class="mat-app-background content-container">
-<router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>
