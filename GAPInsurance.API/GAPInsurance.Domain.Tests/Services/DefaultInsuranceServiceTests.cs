@@ -154,7 +154,11 @@ namespace GAPInsurance.Domain.Tests.Services {
       var policyGuid = Guid.NewGuid();
       var originalPolicy = new InsurancePolicy(policyGuid, "123", "123", new Dictionary<InsuranceCoverage, float>(), DateTime.Now, 10, 10, RiskLevel.Low);
       var expectedPolicy = new InsurancePolicy(policyGuid, "Updated Policy", "This is an updated policy", new Dictionary<InsuranceCoverage, float>(), DateTime.Now, 10, 10, RiskLevel.Low);
-      
+
+      repoMock
+        .Setup(mock => mock.GetPolicyAsync(policyGuid))
+        .ReturnsAsync(originalPolicy);
+
       repoMock
         .Setup(mock => mock.StorePolicyAsync(It.Is<InsurancePolicy>(policy =>
           policy.Name == expectedPolicy.Name &&
@@ -227,7 +231,10 @@ namespace GAPInsurance.Domain.Tests.Services {
         .Returns(Task.CompletedTask)
         .Verifiable();
 
-      await service.CreateClientAsync("Louise");
+      var actualClient = await service.CreateClientAsync("Louise");
+      Check.That(actualClient).IsNotNull();
+      Check.That(actualClient.Id).IsNotEqualTo(new Guid());
+      Check.That(actualClient.Name).IsEqualTo("Louise");
       repoMock.Verify();
     }
 
@@ -255,11 +262,18 @@ namespace GAPInsurance.Domain.Tests.Services {
     [Fact]
     public async Task UpdatingAClientMustCallThroughToTheRepository() {
       var targetGuid = Guid.NewGuid();
+      var client = new Client(targetGuid, "Alex");
+
+      repoMock
+        .Setup(mock => mock.GetClientAsync(targetGuid))
+        .ReturnsAsync(client);
+
       repoMock
         .Setup(mock => mock.StoreClientAsync(targetGuid, "Louise"))
-        .Returns(Task.CompletedTask);
+        .Returns(Task.CompletedTask)
+        .Verifiable();
 
-      await service.UpdateClientAsync(targetGuid);
+      await service.UpdateClientAsync(targetGuid, "Louise");
       repoMock.Verify();
     }
 
@@ -290,6 +304,11 @@ namespace GAPInsurance.Domain.Tests.Services {
 
       var actualClients = await service.GetAllClientsAsync();
       Check.That(actualClients).IsSameReferenceAs(actualClients);
+    }
+
+    [Fact]
+    public async Task AssigningAPolicyToAClientMustCallThroughToTheRepository() {
+      var 
     }
   }
 }

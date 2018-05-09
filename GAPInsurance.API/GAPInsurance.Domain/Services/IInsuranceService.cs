@@ -11,10 +11,10 @@ namespace GAPInsurance.Domain.Services {
     Task<InsurancePolicy> UpdatePolicyAsync(Guid policyId, string name, string description, float premiumPrice);
     Task DeletePolicyAsync(Guid policyId);
     Task<IEnumerable<InsurancePolicy>> GetAllPoliciesAsync();
-    Task CreateClientAsync(string name);
-    Task DeleteClientAsync(Guid id);
-    Task UpdateClientAsync(Guid targetGuid);
-    Task<Client> GetClientAsync(Guid targetGuid);
+    Task<Client> CreateClientAsync(string name);
+    Task DeleteClientAsync(Guid clientId);
+    Task UpdateClientAsync(Guid clientId, string name);
+    Task<Client> GetClientAsync(Guid clientId);
     Task<IEnumerable<Client>> GetAllClientsAsync();
   }
 }
