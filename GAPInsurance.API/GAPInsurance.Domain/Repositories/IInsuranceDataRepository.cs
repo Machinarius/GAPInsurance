@@ -14,5 +14,6 @@ namespace GAPInsurance.Domain.Repositories {
     Task<Client> GetClientAsync(Guid id);
     Task DeleteClientAsync(Guid id);
     Task<IEnumerable<Client>> GetAllClientsAsync();
+    Task AddClientAssignmentAsync(Guid policyId, Guid clientId);
   }
 }

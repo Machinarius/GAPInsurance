@@ -14,6 +14,15 @@ namespace GAPInsurance.Domain.Services.Default {
       this.dataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
     }
 
+    public async Task AssignPolicyToClientAsync(Guid policyId, Guid clientId) {
+      var client = await dataRepository.GetClientAsync(clientId);
+      if (client.AssignedPolicies.Any(policy => policy.Id == policyId)) {
+        return;
+      }
+
+      await dataRepository.AddClientAssignmentAsync(policyId, clientId);
+    }
+
     public async Task<Client> CreateClientAsync(string name) {
       if (string.IsNullOrEmpty(name)) {
         throw new ArgumentNullException(nameof(name));
@@ -49,15 +58,19 @@ namespace GAPInsurance.Domain.Services.Default {
       }
 
       if (!coverages.Any()) {
-        throw new InvalidOperationException("Policies must have at least one coverage");
+        throw new InvalidCoveragesException("Policies must have at least one coverage");
       }
 
       if (coverages.Any(coverage => coverage.Value < 0)) {
-        throw new InvalidOperationException("Coverages must be effective for more than 0% of the insured value");
+        throw new InvalidCoveragesException("Coverages must be effective for more than 0% of the insured value");
       }
 
       if (coverages.Any(coverage => coverage.Key == InsuranceCoverage.None)) {
         throw new InvalidCoveragesException("Cannot register a coverage for an invalid coverage type");
+      }
+
+      if (riskLevel == RiskLevel.None) {
+        throw new ArgumentNullException(nameof(riskLevel));
       }
 
       if (riskLevel == RiskLevel.High) {
@@ -118,6 +131,15 @@ namespace GAPInsurance.Domain.Services.Default {
       return dataRepository.GetPolicyAsync(policyId);
     }
 
+    public async Task RemovePolicyFromClientAsync(Guid policyId, Guid clientId) {
+      var policy = await dataRepository.GetPolicyAsync(policyId);
+      if (policy.CoveredClients.Any(client => client.Id == clientId)) {
+        return;
+      }
+
+      await dataRepository.DeleteClientAssignmentAsync(policyId, clientId);
+    }
+
     public async Task UpdateClientAsync(Guid clientId, string name) {
       if (string.IsNullOrEmpty(name)) {
         throw new ArgumentNullException(nameof(name));
@@ -144,7 +166,8 @@ namespace GAPInsurance.Domain.Services.Default {
       var updatedPolicy = new InsurancePolicy(policyId, name, description, policy.CoveragePercentages, policy.CoverageStartDate, 
         policy.CoverageLengthInMonths, policy.PremiumCostInDollars, policy.InsuredRiskLevel, policy.CoveredClients);
 
-      throw new NotImplementedException();
+      await dataRepository.StorePolicyAsync(updatedPolicy);
+      return updatedPolicy;
     }
   }
 }

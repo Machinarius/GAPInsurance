@@ -16,5 +16,7 @@ namespace GAPInsurance.Domain.Services {
     Task UpdateClientAsync(Guid clientId, string name);
     Task<Client> GetClientAsync(Guid clientId);
     Task<IEnumerable<Client>> GetAllClientsAsync();
+    Task AssignPolicyToClientAsync(Guid policyId, Guid clientId);
+    Task RemovePolicyFromClientAsync(Guid policyId, Guid clientId);
   }
 }

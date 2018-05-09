@@ -31,6 +31,10 @@ namespace GAPInsurance.Domain.Tests.Services {
       float premiumPrice = 0;
       RiskLevel riskLevel = RiskLevel.None;
 
+      repoMock
+        .Setup(mock => mock.StorePolicyAsync(It.IsAny<InsurancePolicy>()))
+        .Returns(Task.CompletedTask);
+
       Check
         .ThatAsyncCode(CreatePolicyAsync)
         .Throws<ArgumentNullException>();
@@ -153,27 +157,23 @@ namespace GAPInsurance.Domain.Tests.Services {
     public async Task UpdatingAPolicyMustCallThroughToTheRepositoryWithTheUpdatedValues() {
       var policyGuid = Guid.NewGuid();
       var originalPolicy = new InsurancePolicy(policyGuid, "123", "123", new Dictionary<InsuranceCoverage, float>(), DateTime.Now, 10, 10, RiskLevel.Low);
-      var expectedPolicy = new InsurancePolicy(policyGuid, "Updated Policy", "This is an updated policy", new Dictionary<InsuranceCoverage, float>(), DateTime.Now, 10, 10, RiskLevel.Low);
+      var expectedPolicy = new InsurancePolicy(policyGuid, "Updated Policy", "This is an updated policy", 
+        new Dictionary<InsuranceCoverage, float>(), originalPolicy.CoverageStartDate, 10, 10, RiskLevel.Low);
 
       repoMock
         .Setup(mock => mock.GetPolicyAsync(policyGuid))
         .ReturnsAsync(originalPolicy);
 
+      InsurancePolicy storedPolicy = null;
       repoMock
-        .Setup(mock => mock.StorePolicyAsync(It.Is<InsurancePolicy>(policy =>
-          policy.Name == expectedPolicy.Name &&
-          policy.Description == expectedPolicy.Description &&
-          policy.CoveragePercentages.Count == expectedPolicy.CoveragePercentages.Count &&
-          !policy.CoveragePercentages.Except(expectedPolicy.CoveragePercentages).Any() &&
-          policy.CoverageStartDate == expectedPolicy.CoverageStartDate &&
-          policy.PremiumCostInDollars == expectedPolicy.PremiumCostInDollars &&
-          policy.InsuredRiskLevel == expectedPolicy.InsuredRiskLevel
-        )))
+        .Setup(mock => mock.StorePolicyAsync(It.IsAny<InsurancePolicy>()))
+        .Callback((InsurancePolicy policy) => { storedPolicy = policy; })
         .Returns(Task.CompletedTask)
         .Verifiable();
 
       var actualPolicy = await service.UpdatePolicyAsync(policyGuid, expectedPolicy.Name, expectedPolicy.Description, expectedPolicy.PremiumCostInDollars);
       Check.That(actualPolicy).IsNotNull();
+      Check.That(actualPolicy).IsSameReferenceAs(storedPolicy);
 
       Check.That(expectedPolicy.Name).IsEqualTo(actualPolicy.Name);
       Check.That(expectedPolicy.Description).IsEqualTo(actualPolicy.Description);
@@ -308,7 +308,52 @@ namespace GAPInsurance.Domain.Tests.Services {
 
     [Fact]
     public async Task AssigningAPolicyToAClientMustCallThroughToTheRepository() {
-      var 
+      var clientId = Guid.NewGuid();
+      var policyId = Guid.NewGuid();
+
+      var client = new Client(Guid.NewGuid(), "Louise");
+      var policy = new InsurancePolicy(Guid.NewGuid(), "123", "123", new Dictionary<InsuranceCoverage, float>(), DateTime.Now, 10, 10, RiskLevel.Low);
+
+      repoMock
+        .Setup(mock => mock.GetPolicyAsync(policyId))
+        .ReturnsAsync(policy);
+
+      repoMock
+        .Setup(mock => mock.GetClientAsync(clientId))
+        .ReturnsAsync(client);
+
+      repoMock
+        .Setup(mock => mock.AddClientAssignmentAsync(policyId, clientId))
+        .Returns(Task.CompletedTask)
+        .Verifiable();
+
+      await service.AssignPolicyToClientAsync(policyId, clientId);
+      repoMock.Verify();
+    }
+
+    [Fact]
+    public async Task RemovingAPolicyFromAClientMustCallThroughToTheRepository() {
+      var clientId = Guid.NewGuid();
+      var policyId = Guid.NewGuid();
+
+      var client = new Client(Guid.NewGuid(), "Louise");
+      var policy = new InsurancePolicy(Guid.NewGuid(), "123", "123", new Dictionary<InsuranceCoverage, float>(), DateTime.Now, 10, 10, RiskLevel.Low, new[] { client });
+
+      repoMock
+        .Setup(mock => mock.GetPolicyAsync(policyId))
+        .ReturnsAsync(policy);
+
+      repoMock
+        .Setup(mock => mock.GetClientAsync(clientId))
+        .ReturnsAsync(client);
+
+      repoMock
+        .Setup(mock => mock.DeleteClientAssignmentAsync(policyId, clientId))
+        .Returns(Task.CompletedTask)
+        .Verifiable();
+
+      await service.RemovePolicyFromClientAsync(policyId, clientId);
+      repoMock.Verify();
     }
   }
 }
