@@ -22,15 +22,22 @@
 
     <mat-form-field>
       <input matInput placeholder="Coverage length" [(ngModel)]="coverageLength" type="number" />
+      <span matSuffix> months</span>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select placeholder="Risk level" [(ngModel)]="riskLevel">
-        <mat-option>
+      <mat-select placeholder="Risk level" [(ngModel)]="riskLevelId">
+        <mat-option value="1">
           Low
         </mat-option>
-        <mat-option>
+        <mat-option value="2">
           Medium
+        </mat-option>
+        <mat-option value="3">
+          Medium-High
+        </mat-option>
+        <mat-option value="4">
+          High
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -55,8 +62,13 @@
       <span matSuffix>%</span>
     </mat-form-field>
   </div>
+
+  <loader *ngIf="loadingData"></loader>
+  <div *ngIf="creationError">
+    <p>Something wrong happened. Please check your internet connection and try again.</p>
+  </div>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onCancelClicked()">Cancel</button>
+  <button mat-button (click)="onCancelClicked()" >Cancel</button>
   <button mat-button (click)="onCreateClicked()">Create</button>
 </div>

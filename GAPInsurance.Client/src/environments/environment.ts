@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: "http://localhost:47333",
+  apiBaseUrl: "http://localhost:51763",
   auth0Config: {
     clientID: 'JDiNJXS0iHGb2EFceFANkMwprc74bw5l',
     domain: 'machinarius.auth0.com',

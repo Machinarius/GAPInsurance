@@ -18,6 +18,10 @@
         <button mat-button (click)="loadPolicies()">Try again</button>
       </div>
 
+      <div *ngIf="(!loadingPolicies && !policiesLoadError) && (!policies || !policies.length)">
+        <p>No policies have been created yet, use the button above to do so.</p>
+      </div>
+
       <mat-card class="policy-container" *ngFor="let policy of policies">
         <div class="policy-header">
           <div class="policy-info">
@@ -28,7 +32,9 @@
             <button class="action-button" mat-raised-button
                     color="primary"><mat-icon>edit</mat-icon> Edit</button>
             <button class="action-button" mat-raised-button
-                    color="warn"><mat-icon>delete</mat-icon> Delete</button>
+                    color="warn" (click)="onDeletePolicyClicked(policy)">
+              <mat-icon>delete</mat-icon> Delete
+            </button>
           </div>
         </div>
         <p class="mat-subheading-2 data-heading">Details</p>
@@ -47,7 +53,7 @@
           </div>
           <div>
             <span class="mat-caption">Risk level</span><br/>
-            <span class="mat-body-2">{{policy.riskLevelId}}</span>
+            <span class="mat-body-2">{{policy.riskLevel}}</span>
           </div>
         </div>
         <p class="mat-subheading-2 data-heading">Coverages</p>
@@ -86,22 +92,39 @@
           <mat-icon>add</mat-icon> Create
         </button>
       </div>
-      <mat-card class="policy-container">
+
+      <loader *ngIf="loadingClients"></loader>
+      <div *ngIf="clientsLoadError">
+        <p>Something wrong happened. Please check your internet connection and try again.</p>
+        <button mat-button (click)="loadClients()">Try again</button>
+      </div>
+
+      <div *ngIf="(!loadingClients && !clientsLoadError) && (!clients || !clients.length)">
+        <p>No clients have been created yet, use the button above to do so.</p>
+      </div>
+
+      <mat-card class="policy-container" *ngFor="let client of clients">
         <div class="policy-header">
           <div class="policy-info">
-            <h4 class="client-name">Louise Lane</h4>
+            <h4 class="client-name">{{client.name}}</h4>
           </div>
           <div class="policy-actions">
             <button class="action-button" mat-raised-button
                     color="primary"><mat-icon>edit</mat-icon> Edit</button>
             <button class="action-button" mat-raised-button
-                    color="warn"><mat-icon>delete</mat-icon> Delete</button>
+                    color="warn" (click)="onDeleteClientClicked(client)">
+              <mat-icon>delete</mat-icon> Delete
+            </button>
           </div>
         </div>
-        <p class="mat-subheading-2 data-heading">Policies covering this client</p>
+        <p class="mat-subheading-2 data-heading">Policies covering this client ({{client.assignedPolicies.length}})</p>
         <div class="horizontal-list">
-          <span class="mat-body-2 horizontal-label">Best policy</span>
+          <span class="mat-body-2 horizontal-label" *ngFor="let policy of client.assignedPolicies">{{policy}}</span>
         </div>
+        <button class="action-button" mat-raised-button
+                color="primary" (click)="onModifyPoliciesClicked(client)">
+          <mat-icon>edit</mat-icon> Modify policies
+        </button>
       </mat-card>
     </div>
   </div>

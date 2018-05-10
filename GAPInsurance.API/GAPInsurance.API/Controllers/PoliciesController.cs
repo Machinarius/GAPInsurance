@@ -58,19 +58,19 @@ namespace GAPInsurance.API.Controllers {
       }
 
       var coverages = new Dictionary<InsuranceCoverage, float>();
-      if (request.EarthquakeCoverage >= 0) {
+      if (request.EarthquakeCoverage > 0) {
         coverages.Add(InsuranceCoverage.Earthquake, request.EarthquakeCoverage);
       }
 
-      if (request.FireCoverage >= 0) {
+      if (request.FireCoverage > 0) {
         coverages.Add(InsuranceCoverage.Fire, request.FireCoverage);
       }
 
-      if (request.TheftCoverage >= 0) {
+      if (request.TheftCoverage > 0) {
         coverages.Add(InsuranceCoverage.Theft, request.TheftCoverage);
       }
 
-      if (request.LossCoverage >= 0) {
+      if (request.LossCoverage > 0) {
         coverages.Add(InsuranceCoverage.Loss, request.LossCoverage);
       }
 

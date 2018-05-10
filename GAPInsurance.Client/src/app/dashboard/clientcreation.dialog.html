@@ -1,8 +1,12 @@
 <h1 mat-dialog-title>New Client</h1>
 <div mat-dialog-content>
-    <mat-form-field>
-      <input matInput placeholder="Client name" [(ngModel)]="clientName" />
-    </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Client name" [(ngModel)]="clientName" />
+  </mat-form-field>
+  <loader *ngIf="loadingData"></loader>
+  <div *ngIf="creationError">
+    <p>Something wrong happened. Please check your internet connection and try again.</p>
+  </div>
 </div>
 
 <div mat-dialog-actions>

@@ -57,21 +57,28 @@ namespace GAPInsurance.Domain.Repositories.EntityFramework {
     }
 
     public async Task<IEnumerable<Client>> GetAllClientsAsync() {
-      var dbClients = await dbContext.Clients.ToListAsync();
+      var dbClients = await dbContext.Clients
+        .Include(client => client.ClientCoverages)
+        .ToListAsync();
       var clients = dbClients.Select(dbClient => dbClient.ToModel()).ToArray();
 
       return clients.AsEnumerable();
     }
 
     public async Task<IEnumerable<InsurancePolicy>> GetAllPoliciesAsync() {
-      var dbPolicies = await dbContext.Policies.ToListAsync();
+      var dbPolicies = await dbContext.Policies
+        .Include(policy => policy.ClientCoverages)
+        .Include(policy => policy.CoveragePercentages)
+        .ToListAsync();
       var policies = dbPolicies.Select(dbPolicy => dbPolicy.ToModel()).ToArray();
 
       return policies.AsEnumerable();
     }
 
     public async Task<Client> GetClientAsync(Guid clientId) {
-      var dbClient = await dbContext.Clients.FindAsync(clientId);
+      var dbClient = await dbContext.Clients
+        .Include(_client => _client.ClientCoverages)
+        .FirstOrDefaultAsync(_client => _client.Id == clientId);
       if (dbClient == null) {
         throw new ResourceNotFoundException($"Could not find a client for id {clientId}");
       }
@@ -81,7 +88,10 @@ namespace GAPInsurance.Domain.Repositories.EntityFramework {
     }
 
     public async Task<InsurancePolicy> GetPolicyAsync(Guid policyId) {
-      var dbPolicy = await dbContext.Policies.FindAsync(policyId);
+      var dbPolicy = await dbContext.Policies
+        .Include(_policy => _policy.ClientCoverages)
+        .Include(_policy => _policy.CoveragePercentages)
+        .FirstOrDefaultAsync(_policy => _policy.Id == policyId);
       if (dbPolicy == null) {
         throw new ResourceNotFoundException($"Could not find a policy for id {policyId}");
       }

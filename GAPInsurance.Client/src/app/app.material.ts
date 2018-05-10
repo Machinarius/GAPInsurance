@@ -1,7 +1,9 @@
 import { MatButtonModule, MatToolbarModule, MatMenuModule,
          MatIconModule, MatSidenavModule, MatProgressBarModule,
          MatCardModule, MatInputModule, MatDialogModule,
-         MatSelectModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+         MatSelectModule, MatDatepickerModule, MatNativeDateModule, 
+         MatSnackBarModule, 
+         MatDividerModule} from '@angular/material';
 import { NgModule } from "@angular/core";
 
 let modules = [
@@ -16,7 +18,9 @@ let modules = [
   MatDialogModule,
   MatSelectModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatSnackBarModule,
+  MatDividerModule
 ];
 
 @NgModule({
