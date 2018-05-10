@@ -1,4 +1,6 @@
 ﻿using GAPInsurance.API.Configuration;
+using GAPInsurance.Domain.Repositories.EntityFramework;
+using GAPInsurance.Domain.Services.Default;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +36,9 @@ namespace GAPInsurance.API {
         options.Authority = authConfig.Authority;
         options.Audience = authConfig.Audience;
       });
+
+      services.AddDefaultBusinessServices();
+      services.AddEntityFrameworkRepositories(Configuration);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

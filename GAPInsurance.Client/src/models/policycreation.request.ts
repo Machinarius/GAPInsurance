@@ -6,6 +6,7 @@ export class PolicyCreationRequest {
     public coverageStartDate: string,
     public coverageLength: number,
     public riskLevelId: number,
+    public earthquakeCoverage: number,
     public fireCoverage: number,
     public theftCoverage: number,
     public lossCoverage: number
