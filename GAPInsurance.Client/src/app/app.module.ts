@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,11 +12,11 @@ import { EntryPointComponent } from './entrypoint/entrypoint.component';
 import { NotFoundComponent } from './notfound/notfound.component';
 import { AuthService, BearerHttpInterceptor } from '../services/auth.service';
 import { AuthCallbackComponent } from './authcallback/authcallback.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PolicyCreationDialog } from './dashboard/policycreation.dialog';
 import { ClientCreationDialog } from './dashboard/clientcreation.dialog';
 import { LoaderWidget } from './widgets/loader.widget';
+import { InsuranceDataService } from '../services/insurancedata.service';
 
 @NgModule({
   declarations: [
@@ -34,13 +35,14 @@ import { LoaderWidget } from './widgets/loader.widget';
     BrowserAnimationsModule,
     AppMaterialModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: BearerHttpInterceptor,
     multi: true
-  }, AuthService],
+  }, AuthService, InsuranceDataService],
   bootstrap: [AppComponent],
   entryComponents: [
     PolicyCreationDialog,

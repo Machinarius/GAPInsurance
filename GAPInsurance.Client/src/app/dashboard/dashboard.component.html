@@ -7,16 +7,23 @@
     <div class="column">
       <div class="header-container">
         <h3 class="header-title">Policies</h3>
-        <button mat-raised-button class="action-button"
+        <button mat-raised-button class="action-button" *ngIf="policies"
                 color="accent" (click)="onCreatePolicyClicked()">
           <mat-icon>add</mat-icon> Create
         </button>
       </div>
-      <mat-card class="policy-container">
+
+      <loader *ngIf="loadingPolicies"></loader>
+      <div *ngIf="policiesLoadError">
+        <p>Something wrong happened. Please check your internet connection and try again.</p>
+        <button mat-button (click)="loadPolicies()">Try again</button>
+      </div>
+
+      <mat-card class="policy-container" *ngFor="let policy of policies">
         <div class="policy-header">
           <div class="policy-info">
-            <h4 class="policy-title">Best policy</h4>
-            <p class="policy-description">Hands down the best there is</p>
+            <h4 class="policy-title">{{policy.name}}</h4>
+            <p class="policy-description">{{policy.description}}</p>
           </div>
           <div class="policy-actions">
             <button class="action-button" mat-raised-button
@@ -29,44 +36,46 @@
         <div class="policy-data">
           <div>
             <span class="mat-caption">Premium price</span><br/>
-            <span class="mat-body-2">10 USD</span>
+            <span class="mat-body-2">{{policy.premiumPrice}} USD</span>
           </div>
           <div>
             <span class="mat-caption">Coverage start</span><br/>
-            <span class="mat-body-2">10/07/2018</span>
+            <span class="mat-body-2">{{policy.coverageStartDate}}</span>
           </div>
           <div>
             <span class="mat-caption">Coverage length</span><br/>
-            <span class="mat-body-2">10 months</span>
+            <span class="mat-body-2">{{policy.coverageLength}} months</span>
           </div>
           <div>
             <span class="mat-caption">Risk level</span><br/>
-            <span class="mat-body-2">Low</span>
+            <span class="mat-body-2">{{policy.riskLevelId}}</span>
           </div>
         </div>
         <p class="mat-subheading-2 data-heading">Coverages</p>
         <div class="policy-data">
           <div>
             <span class="mat-caption">Earthquake</span><br/>
-            <span class="mat-body-2">50%</span>
+            <span class="mat-body-2">{{policy.earthquakeCoverage}}%</span>
           </div>
           <div>
             <span class="mat-caption">Fire</span><br/>
-            <span class="mat-body-2">67%</span>
+            <span class="mat-body-2">{{policy.fireCoverage}}%</span>
           </div>
           <div>
             <span class="mat-caption">Theft</span><br/>
-            <span class="mat-body-2">85%</span>
+            <span class="mat-body-2">{{policy.theftCoverage}}%</span>
           </div>
           <div>
             <span class="mat-caption">Loss</span><br/>
-            <span class="mat-body-2">58%</span>
+            <span class="mat-body-2">{{policy.lossCoverage}}%</span>
           </div>
         </div>
-        <p class="mat-subheading-2 data-heading">Clients covered</p>
+        <p class="mat-subheading-2 data-heading">Clients covered ({{policy.coveredClients.length}})</p>
         <div class="horizontal-list">
-          <span class="mat-body-2 horizontal-label">Louise Lane</span>
-          <span class="mat-body-2 horizontal-label">Lex Luthor</span>
+          <span class="mat-body-2 horizontal-label"
+                *ngFor="let client of policy.coveredClients">
+            {{client}}
+          </span>
         </div>
       </mat-card>
     </div>
