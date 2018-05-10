@@ -37,6 +37,8 @@ namespace GAPInsurance.API {
         options.Audience = authConfig.Audience;
       });
 
+      services.AddCors();
+
       services.AddDefaultBusinessServices();
       services.AddEntityFrameworkRepositories(Configuration);
     }
@@ -46,6 +48,12 @@ namespace GAPInsurance.API {
       if (env.IsDevelopment()) {
         app.UseDeveloperExceptionPage();
       }
+
+      app.UseCors(builder =>
+        builder
+          .AllowAnyHeader()
+          .AllowAnyMethod()
+          .AllowAnyOrigin());
 
       app.UseAuthentication();
       app.UseMvc();
