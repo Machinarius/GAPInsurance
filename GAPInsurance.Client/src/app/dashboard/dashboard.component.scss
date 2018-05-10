@@ -1,0 +1,97 @@
+.columns-container {
+  @media screen and (min-width: 1500px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 10px;
+  }
+}
+
+.policy-title {
+  -webkit-margin: 0;
+  margin: 0;
+}
+
+.policy-description {
+  -webkit-margin-before: 0;
+  margin-before: 0;
+}
+
+.policy-header {
+  @media screen and (min-width: 800px) {
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    grid-column-gap: 2px;
+  }
+}
+
+.policy-actions {
+  @media screen and (min-width: 800px) {
+    display: grid;
+    grid-template-columns: min-content min-content;
+    grid-column-gap: 5px;
+  }
+
+  @media screen and (max-width: 800px) {
+    margin-bottom: 5px;
+  }
+}
+
+.action-button {
+  @media screen and (max-width: 800px) {
+    margin-right: 5px;
+  }
+}
+
+.policy-data {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.data-heading {
+  margin-bottom: 2px;
+}
+
+.header-title {
+  -webkit-margin-after: 2px;
+  margin-bottom: 2px;
+}
+
+.header-container {
+  margin-bottom: 10px;
+
+  @media screen and (min-width: 800px) {
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    grid-column-gap: 2px;
+  }
+}
+
+.header-clients {
+  @media screen and (max-width: 1500px) {
+    margin-top: 20px;
+  }
+}
+
+.horizontal-list {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.horizontal-label {
+  margin-right: 10px;
+}
+
+.client-name {
+  vertical-align: middle;
+  margin: 0;
+}

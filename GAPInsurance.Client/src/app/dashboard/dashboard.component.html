@@ -1,0 +1,95 @@
+<div class="main-column">
+  <h2>Welcome!</h2>
+  <h4>Here's an overview of the clients and policies</h4>
+
+  <div class="columns-container">
+    <div class="column">
+      <div class="header-container">
+        <h3 class="header-title">Policies</h3>
+        <button mat-raised-button class="action-button"
+                color="accent"><mat-icon>add</mat-icon> Create</button>
+      </div>
+      <mat-card class="policy-container">
+        <div class="policy-header">
+          <div class="policy-info">
+            <h4 class="policy-title">Best policy</h4>
+            <p class="policy-description">Hands down the best there is</p>
+          </div>
+          <div class="policy-actions">
+            <button class="action-button" mat-raised-button
+                    color="primary"><mat-icon>edit</mat-icon> Edit</button>
+            <button class="action-button" mat-raised-button
+                    color="warn"><mat-icon>delete</mat-icon> Delete</button>
+          </div>
+        </div>
+        <p class="mat-subheading-2 data-heading">Details</p>
+        <div class="policy-data">
+          <div>
+            <span class="mat-caption">Premium price</span><br/>
+            <span class="mat-body-2">10 USD</span>
+          </div>
+          <div>
+            <span class="mat-caption">Coverage start</span><br/>
+            <span class="mat-body-2">10/07/2018</span>
+          </div>
+          <div>
+            <span class="mat-caption">Coverage length</span><br/>
+            <span class="mat-body-2">10 months</span>
+          </div>
+          <div>
+            <span class="mat-caption">Risk level</span><br/>
+            <span class="mat-body-2">Low</span>
+          </div>
+        </div>
+        <p class="mat-subheading-2 data-heading">Coverages</p>
+        <div class="policy-data">
+          <div>
+            <span class="mat-caption">Earthquake</span><br/>
+            <span class="mat-body-2">50%</span>
+          </div>
+          <div>
+            <span class="mat-caption">Fire</span><br/>
+            <span class="mat-body-2">67%</span>
+          </div>
+          <div>
+            <span class="mat-caption">Theft</span><br/>
+            <span class="mat-body-2">85%</span>
+          </div>
+          <div>
+            <span class="mat-caption">Loss</span><br/>
+            <span class="mat-body-2">58%</span>
+          </div>
+        </div>
+        <p class="mat-subheading-2 data-heading">Clients covered</p>
+        <div class="horizontal-list">
+          <span class="mat-body-2 horizontal-label">Louise Lane</span>
+          <span class="mat-body-2 horizontal-label">Lex Luthor</span>
+        </div>
+      </mat-card>
+    </div>
+    <div class="column">
+      <div class="header-container header-clients">
+        <h3 class="header-title">Clients</h3>
+        <button mat-raised-button class="action-button"
+                color="accent"><mat-icon>add</mat-icon> Create</button>
+      </div>
+      <mat-card class="policy-container">
+        <div class="policy-header">
+          <div class="policy-info">
+            <h4 class="client-name">Louise Lane</h4>
+          </div>
+          <div class="policy-actions">
+            <button class="action-button" mat-raised-button
+                    color="primary"><mat-icon>edit</mat-icon> Edit</button>
+            <button class="action-button" mat-raised-button
+                    color="warn"><mat-icon>delete</mat-icon> Delete</button>
+          </div>
+        </div>
+        <p class="mat-subheading-2 data-heading">Policies covering this client</p>
+        <div class="horizontal-list">
+          <span class="mat-body-2 horizontal-label">Best policy</span>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
