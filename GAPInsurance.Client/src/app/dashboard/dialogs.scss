@@ -1,0 +1,7 @@
+.policy-form {
+  @media screen and (max-width: 800px) {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 10px;
+  }
+}

@@ -13,6 +13,9 @@ import { AuthService, BearerHttpInterceptor } from '../services/auth.service';
 import { AuthCallbackComponent } from './authcallback/authcallback.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { PolicyCreationDialog } from './dashboard/policycreation.dialog';
+import { ClientCreationDialog } from './dashboard/clientcreation.dialog';
+import { LoaderWidget } from './widgets/loader.widget';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     EntryPointComponent,
     NotFoundComponent,
     AuthCallbackComponent,
-    DashboardComponent
+    DashboardComponent,
+    PolicyCreationDialog,
+    ClientCreationDialog,
+    LoaderWidget
   ],
   imports: [
     BrowserModule,
@@ -35,6 +41,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     useClass: BearerHttpInterceptor,
     multi: true
   }, AuthService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    PolicyCreationDialog,
+    ClientCreationDialog
+  ]
 })
 export class AppModule { }

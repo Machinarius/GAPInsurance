@@ -1,0 +1,62 @@
+<h1 mat-dialog-title>New Policy</h1>
+<div mat-dialog-content>
+  <h4>Policy information</h4>
+  <div class="policy-form">
+    <mat-form-field>
+      <input matInput placeholder="Name" [(ngModel)]="name" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Description" [(ngModel)]="description" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Premium Price" [(ngModel)]="premiumPrice" type="number" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Coverage start date" [(ngModel)]="startDate" type="date" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Coverage length" [(ngModel)]="coverageLength" type="number" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Risk level" [(ngModel)]="riskLevel">
+        <mat-option>
+          Low
+        </mat-option>
+        <mat-option>
+          Medium
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <h4>Coverages</h4>
+  <div class="policy-form">
+    <mat-form-field>
+      <input matInput placeholder="Earthquake" [(ngModel)]="earthquakeCoverage" type="number" />
+      <span matSuffix>%</span>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Fire" [(ngModel)]="fireCoverage" type="number" />
+      <span matSuffix>%</span>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Theft" [(ngModel)]="theftCoverage" type="number" />
+      <span matSuffix>%</span>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Loss" [(ngModel)]="lossCoverage" type="number" />
+      <span matSuffix>%</span>
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClicked()">Cancel</button>
+  <button mat-button (click)="onCreateClicked()">Create</button>
+</div>
