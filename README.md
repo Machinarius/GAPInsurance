@@ -14,6 +14,10 @@ This is my implementation of the insurance company test for GAP
 - Proper client-side form validations using [ngForm][3]
 - Proper client-side API error messages
 
+## About authentication
+- The client and server apps are configured to work with an auth0 tenant that has a single valid user:
+`test@gapinsurance.com - abc123ZX`
+
 [1]: https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authorization.authorizeattribute.roles?view=aspnetcore-2.1#Microsoft_AspNetCore_Authorization_AuthorizeAttribute_Roles
 [2]: https://auth0.com/rules/roles-creation
 [3]: https://angular.io/api/forms/NgForm
