@@ -4,9 +4,11 @@ import { LandingComponent } from './landing/landing.component';
 import { EntryPointComponent } from './entrypoint/entrypoint.component';
 import { NotFoundComponent } from './notfound/notfound.component';
 import { AuthCallbackComponent } from './authcallback/authcallback.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: 'landing', component: LandingComponent },
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'auth-callback', component: AuthCallbackComponent },
   { path: '', component: EntryPointComponent, pathMatch: 'full' },
   { path: '**', component: NotFoundComponent }

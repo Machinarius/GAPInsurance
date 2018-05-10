@@ -12,6 +12,7 @@ import { NotFoundComponent } from './notfound/notfound.component';
 import { AuthService, BearerHttpInterceptor } from '../services/auth.service';
 import { AuthCallbackComponent } from './authcallback/authcallback.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     LandingComponent,
     EntryPointComponent,
     NotFoundComponent,
-    AuthCallbackComponent
+    AuthCallbackComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
