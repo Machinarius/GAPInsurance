@@ -110,7 +110,9 @@
           </div>
           <div class="policy-actions">
             <button class="action-button" mat-raised-button
-                    color="primary"><mat-icon>edit</mat-icon> Edit</button>
+                    color="primary" (click)="onEditClientClicked(client)">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
             <button class="action-button" mat-raised-button
                     color="warn" (click)="onDeleteClientClicked(client)">
               <mat-icon>delete</mat-icon> Delete

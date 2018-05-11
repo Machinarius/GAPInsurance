@@ -39,6 +39,34 @@ namespace GAPInsurance.API.Controllers {
       return Ok(response);
     }
 
+    [HttpPut]
+    [Route("{clientIdString}")]
+    public async Task<IActionResult> UpdateClient([FromRoute] string clientIdString, [FromBody] ClientCreationRequest updateRequest) {
+      if (string.IsNullOrEmpty(clientIdString) ||
+          string.IsNullOrEmpty(updateRequest.Name)) {
+        return BadRequest();
+      }
+
+      Guid clientId;
+      try {
+        clientId = Guid.Parse(clientIdString);
+      } catch (FormatException) {
+        return BadRequest();
+      }
+
+      Client client;
+      try {
+        client = await insuranceService.GetClientAsync(clientId);
+      } catch (ResourceNotFoundException) {
+        return NotFound();
+      }
+      
+      await insuranceService.UpdateClientAsync(clientId, updateRequest.Name);
+      client = await insuranceService.GetClientAsync(clientId);
+
+      return Ok(client);
+    }
+
     [HttpDelete]
     [Route("{clientIdString}")]
     public async Task<IActionResult> DeleteClient([FromRoute] string clientIdString) {

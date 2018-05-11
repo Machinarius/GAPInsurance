@@ -154,6 +154,35 @@ export class DashboardComponent implements OnInit {
       });
   }
 
+  public onEditClientClicked(client: Client): void {
+    let updateDialog = this.dialog.open(ClientCreationDialog, {
+      data: {
+        sourceClient: client
+      }
+    });
+
+    updateDialog
+      .afterClosed()
+      .subscribe(dialogResult => {
+        if (!dialogResult) {
+          return;
+        }
+    
+        let updateResult = dialogResult.result as ClientCreationResult;
+        if (updateResult != ClientCreationResult.Success) {
+          return;
+        }
+    
+        let updatedClient = dialogResult.client as Client;
+        this.snackbar.open(`'${updatedClient.name}' was updated successfully`, "OK", {
+          duration: 5000
+        });
+
+        let clientIndex = this.clients.indexOf(client);
+        this.clients[clientIndex] = updatedClient;
+      });
+  }
+
   public onModifyPoliciesClicked(client: Client): void {
     if (!this.policies || this.loadingPolicies) {
       this.snackbar.open("Please wait until the policies have been loaded", "OK", {
@@ -194,7 +223,11 @@ export class DashboardComponent implements OnInit {
         let clientIndex = this.clients.indexOf(client);
         this.clients[clientIndex] = clientResult;
         this.loadPolicies();
-        
+
+        this.snackbar.open(`${clientResult.name}'s policies have been updated successfully`, "OK", {
+          duration: 5000
+        });
+
         /*
         this.policies.forEach(policy => {
           let matchingClientPolicies = clientResult.assignedPolicies
