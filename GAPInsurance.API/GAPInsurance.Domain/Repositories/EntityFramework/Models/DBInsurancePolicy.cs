@@ -68,15 +68,33 @@ namespace GAPInsurance.Domain.Repositories.EntityFramework.Models {
       InsuredRiskLevel = model.InsuredRiskLevel;
       // Ignoring clients
 
-      var newPercentages = model.CoveragePercentages.Select(kvp => new DBCoveragePercentage {
-        PolicyId = model.Id,
-        Coverage = kvp.Key,
-        Percentage = kvp.Value
-      });
+      var newCoveragesList = new List<KeyValuePair<InsuranceCoverage, float>>(model.CoveragePercentages);
+      var coveragesToDelete = new List<InsuranceCoverage>();
+      foreach (var oldCoverage in CoveragePercentages) {
+        KeyValuePair<InsuranceCoverage, float> matchingCoverage;
+        try {
+          matchingCoverage = newCoveragesList.First(x => x.Key == oldCoverage.Coverage);
+        } catch (InvalidOperationException) {
+          coveragesToDelete.Add(oldCoverage.Coverage);
+          continue;
+        }
 
-      CoveragePercentages.Clear();
-      foreach (var percentage in newPercentages) {
-        CoveragePercentages.Add(percentage);
+        oldCoverage.Percentage = matchingCoverage.Value;
+        newCoveragesList.Remove(matchingCoverage);
+      }
+
+      foreach (var deletedCoverage in coveragesToDelete) {
+        var matchingCoverage = CoveragePercentages.FirstOrDefault(x => x.Coverage == deletedCoverage);
+        if (matchingCoverage != null) {
+          CoveragePercentages.Remove(matchingCoverage);
+        }
+      }
+
+      foreach (var newCoverage in newCoveragesList) {
+        CoveragePercentages.Add(new DBCoveragePercentage {
+          Coverage = newCoverage.Key,
+          Percentage = newCoverage.Value
+        });
       }
     }
   }

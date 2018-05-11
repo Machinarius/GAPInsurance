@@ -93,5 +93,66 @@ namespace GAPInsurance.API.Controllers {
       var response = new PolicyResponse(policy);
       return Ok(response);
     }
+
+    [HttpPut]
+    [Route("{policyIdString}")]
+    public async Task<IActionResult> UpdatePolicy([FromRoute] string policyIdString, [FromBody] PolicyCreationRequest request) {
+      if (string.IsNullOrEmpty(policyIdString) ||
+          string.IsNullOrEmpty(request.Name) ||
+          string.IsNullOrEmpty(request.Description) ||
+          string.IsNullOrEmpty(request.CoverageStartDate) ||
+          request.CoverageLength <= 0 ||
+          request.PremiumPrice <= 0 ||
+          !Enum.IsDefined(typeof(RiskLevel), request.RiskLevelId)) {
+        return BadRequest();
+      }
+
+      Guid policyId;
+      try {
+        policyId = Guid.Parse(policyIdString);
+      } catch (FormatException) {
+        return BadRequest();
+      }
+
+      var coverages = new Dictionary<InsuranceCoverage, float>();
+      if (request.EarthquakeCoverage > 0) {
+        coverages.Add(InsuranceCoverage.Earthquake, request.EarthquakeCoverage);
+      }
+
+      if (request.FireCoverage > 0) {
+        coverages.Add(InsuranceCoverage.Fire, request.FireCoverage);
+      }
+
+      if (request.TheftCoverage > 0) {
+        coverages.Add(InsuranceCoverage.Theft, request.TheftCoverage);
+      }
+
+      if (request.LossCoverage > 0) {
+        coverages.Add(InsuranceCoverage.Loss, request.LossCoverage);
+      }
+
+      if (!coverages.Any()) {
+        return BadRequest();
+      }
+
+      DateTime coverageStartDate;
+      try {
+        coverageStartDate = DateTime.Parse(request.CoverageStartDate);
+      } catch (FormatException) {
+        return BadRequest();
+      }
+
+      var riskLevel = (RiskLevel)request.RiskLevelId;
+
+      InsurancePolicy policy;
+      try {
+        policy = await insuranceService.GetPolicyAsync(policyId);
+      } catch (ResourceNotFoundException) {
+        return NotFound();
+      }
+
+      var updatedPolicy = await insuranceService.UpdatePolicyAsync(policyId, request.Name, request.Description, request.PremiumPrice);
+      return Ok(updatedPolicy);
+    }
   }
 }

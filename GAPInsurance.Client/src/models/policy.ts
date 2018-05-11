@@ -5,7 +5,7 @@ export interface Policy {
   premiumPrice: number,
   coverageStartDate: string,
   coverageLength: number,
-  riskLevel: string,
+  riskLevelId: number,
   earthquakeCoverage: number,
   fireCoverage: number,
   theftCoverage: number,

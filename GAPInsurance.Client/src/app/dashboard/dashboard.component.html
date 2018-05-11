@@ -30,7 +30,9 @@
           </div>
           <div class="policy-actions">
             <button class="action-button" mat-raised-button
-                    color="primary"><mat-icon>edit</mat-icon> Edit</button>
+                    color="primary" (click)="onEditPolicyClicked(policy)">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
             <button class="action-button" mat-raised-button
                     color="warn" (click)="onDeletePolicyClicked(policy)">
               <mat-icon>delete</mat-icon> Delete

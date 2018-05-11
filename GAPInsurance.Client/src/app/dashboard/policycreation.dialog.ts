@@ -1,7 +1,10 @@
 import { Component } from "@angular/core";
 import { InsuranceDataService } from "../../services/insurancedata.service";
 import { PolicyCreationRequest } from "../../models/policycreation.request";
-import { MatDialogRef } from "@angular/material";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { Policy } from "../../models/policy";
+import { Inject } from "@angular/core";
+import { Observable } from "rxjs";
 
 @Component({
   templateUrl: './policycreation.dialog.html',
@@ -22,10 +25,29 @@ export class PolicyCreationDialog {
   public loadingData: boolean;
   public creationError: boolean;
 
+  private sourcePolicy: Policy;
+
   constructor(
     private insuranceService: InsuranceDataService,
-    private dialogRef: MatDialogRef<PolicyCreationDialog>
-  ) { }
+    private dialogRef: MatDialogRef<PolicyCreationDialog>,
+    @Inject(MAT_DIALOG_DATA) private data: any
+  ) {
+    this.sourcePolicy = data.sourcePolicy as Policy; 
+    if (!this.sourcePolicy) {
+      return;
+    }
+
+    this.name = this.sourcePolicy.name;
+    this.description = this.sourcePolicy.description;
+    this.premiumPrice = this.sourcePolicy.premiumPrice;
+    this.startDate = this.sourcePolicy.coverageStartDate;
+    this.coverageLength = this.sourcePolicy.coverageLength;
+    this.riskLevelId = this.sourcePolicy.riskLevelId;
+    this.earthquakeCoverage = this.sourcePolicy.earthquakeCoverage;
+    this.fireCoverage = this.sourcePolicy.fireCoverage;
+    this.theftCoverage = this.sourcePolicy.theftCoverage;
+    this.lossCoverage = this.sourcePolicy.lossCoverage;
+  }
 
   public onCreateClicked(): void {
     this.loadingData = true;
@@ -34,13 +56,21 @@ export class PolicyCreationDialog {
     let request = new PolicyCreationRequest(this.name, this.description,
       this.premiumPrice, this.startDate, this.coverageLength, this.riskLevelId,
       this.earthquakeCoverage, this.fireCoverage, this.theftCoverage, this.lossCoverage);
-    this.insuranceService.createPolicy(request)
-      .subscribe((resultPolicy) => {
+
+    var jobObservable: Observable<Policy>;
+    if (this.sourcePolicy) {
+      jobObservable = this.insuranceService.updatePolicy(this.sourcePolicy.id, request);
+    } else {
+      jobObservable = this.insuranceService.createPolicy(request);
+    }
+
+    jobObservable
+      .subscribe(resultPolicy => {
         this.dialogRef.close({
           result: PolicyCreationResult.Success,
           policy: resultPolicy
         });
-      }, (error) => {
+      }, error => {
         this.loadingData = false;
         this.creationError = true;
       });

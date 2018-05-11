@@ -24,6 +24,12 @@ export class InsuranceDataService {
     return this.httpClient.post<Policy>(policiesUrl, request);
   }
 
+  public updatePolicy(id: string, request: PolicyCreationRequest): Observable<Policy> {
+    let policiesUrl = environment.apiBaseUrl + "/api/Policies/" + id;
+    // The bearer interceptor automatically adds the relevant JWT
+    return this.httpClient.put<Policy>(policiesUrl, request);
+  }
+
   public deletePolicy(id: string): Observable<Object> {
     let policiesUrl = environment.apiBaseUrl + "/api/Policies/" + id;
     // The bearer interceptor automatically adds the relevant JWT

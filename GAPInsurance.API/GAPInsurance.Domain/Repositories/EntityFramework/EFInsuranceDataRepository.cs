@@ -95,6 +95,7 @@ namespace GAPInsurance.Domain.Repositories.EntityFramework {
     public async Task<InsurancePolicy> GetPolicyAsync(Guid policyId) {
       var dbPolicy = await dbContext.Policies
         .Include(_policy => _policy.ClientCoverages)
+          .ThenInclude(_coverage => _coverage.Client)
         .Include(_policy => _policy.CoveragePercentages)
         .FirstOrDefaultAsync(_policy => _policy.Id == policyId);
       if (dbPolicy == null) {

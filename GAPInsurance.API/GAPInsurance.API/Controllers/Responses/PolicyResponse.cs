@@ -11,7 +11,7 @@ namespace GAPInsurance.API.Controllers.Responses {
     public float PremiumPrice { get; set; }
     public string CoverageStartDate { get; set; }
     public int CoverageLength { get; set; }
-    public string RiskLevel { get; set; }
+    public int RiskLevelId { get; set; }
     public float EarthquakeCoverage { get; set; }
     public float FireCoverage { get; set; }
     public float TheftCoverage { get; set; }
@@ -31,7 +31,7 @@ namespace GAPInsurance.API.Controllers.Responses {
       PremiumPrice = model.PremiumCostInDollars;
       CoverageStartDate = model.CoverageStartDate.ToShortDateString();
       CoverageLength = model.CoverageLengthInMonths;
-      RiskLevel = model.InsuredRiskLevel.ToString();
+      RiskLevelId = (int)model.InsuredRiskLevel;
       
       foreach (var percentage in model.CoveragePercentages) {
         switch(percentage.Key) {

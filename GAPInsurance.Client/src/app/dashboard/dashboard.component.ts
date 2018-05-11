@@ -123,6 +123,8 @@ export class DashboardComponent implements OnInit {
       .subscribe(result => {
         let policyIndex = this.policies.indexOf(policy);
         this.policies.splice(policyIndex, 1);
+        // TODO: Update the clients in-place instead of reloading them
+        this.loadClients();
 
         this.snackbar.open(`Policy '${policy.name}' deleted`, "OK", {
           duration: 3000
@@ -151,6 +153,35 @@ export class DashboardComponent implements OnInit {
         this.snackbar.open(`Client '${client.name}' could not be deleted. Try again later.`, "OK", {
           duration: 1000
         });
+      });
+  }
+
+  public onEditPolicyClicked(policy: Policy): void {
+    let updateDialog = this.dialog.open(PolicyCreationDialog, {
+      data: {
+        sourcePolicy: policy
+      }
+    });
+
+    updateDialog
+      .afterClosed()
+      .subscribe(dialogResult => {
+        if (!dialogResult) {
+          return;
+        }
+    
+        let updateResult = dialogResult.result as PolicyCreationResult;
+        if (updateResult != PolicyCreationResult.Success) {
+          return;
+        }
+    
+        let updatedPolicy = dialogResult.policy as Policy;
+        this.snackbar.open(`"${updatedPolicy.name}" was updated successfully`, "OK", {
+          duration: 5000
+        });
+        
+        let policyIndex = this.policies.indexOf(policy);
+        this.policies[policyIndex] = updatedPolicy;
       });
   }
 
@@ -222,22 +253,12 @@ export class DashboardComponent implements OnInit {
         let clientResult = dialogResult.client as Client;
         let clientIndex = this.clients.indexOf(client);
         this.clients[clientIndex] = clientResult;
+        // TODO: Update the policies in-place instead of reloading them
         this.loadPolicies();
 
         this.snackbar.open(`${clientResult.name}'s policies have been updated successfully`, "OK", {
           duration: 5000
         });
-
-        /*
-        this.policies.forEach(policy => {
-          let matchingClientPolicies = clientResult.assignedPolicies
-            .map((p, index) => { return { policy: p, index: index }})
-            .filter(p => p.policy.id == policy.id);
-          let matchingPolicyClients = policy.coveredClients
-            .map((c, index) => { return { client: c, index: index }})
-            .filter(c => c.client.id == clientResult.id);
-        });
-        */
       });
   }
 }
