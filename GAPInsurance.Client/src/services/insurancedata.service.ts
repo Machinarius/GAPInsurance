@@ -45,8 +45,8 @@ export class InsuranceDataService {
     return this.httpClient.delete(clientUrl);
   }
 
-  public updateClientPolicies(clientId: string, desiredPolicyIds: [string]): Observable<Client> {
+  public updateClientPolicies(clientId: string, desiredPolicyIds: string[]): Observable<Client> {
     let policiesUrl = environment.apiBaseUrl + "/api/Clients/" + clientId + "/policies";
-    return this.httpClient.patch<Client>(policiesUrl, desiredPolicyIds);
+    return this.httpClient.put<Client>(policiesUrl, desiredPolicyIds);
   }
 }

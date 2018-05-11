@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>{{client.name}}'s policies</h1>
+<div mat-dialog-content>
+  <mat-checkbox *ngFor="let assignment of assignments" [(ngModel)]="assignment.active"
+                class="assignment-check">
+    {{assignment.policyName}}
+  </mat-checkbox>
+  <loader *ngIf="loadingData"></loader>
+  <div *ngIf="updateError">
+    <p>Something wrong happened. Please check your internet connection and try again.</p>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClicked()">Cancel</button>
+  <button mat-button (click)="onSaveClicked()">Save policies</button>
+</div>
+

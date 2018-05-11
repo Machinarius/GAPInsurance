@@ -119,7 +119,7 @@
         </div>
         <p class="mat-subheading-2 data-heading">Policies covering this client ({{client.assignedPolicies.length}})</p>
         <div class="horizontal-list">
-          <span class="mat-body-2 horizontal-label" *ngFor="let policy of client.assignedPolicies">{{policy}}</span>
+          <span class="mat-body-2 horizontal-label" *ngFor="let policy of client.assignedPolicies">{{policy.name}}</span>
         </div>
         <button class="action-button" mat-raised-button
                 color="primary" (click)="onModifyPoliciesClicked(client)">

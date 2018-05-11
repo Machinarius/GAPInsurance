@@ -17,6 +17,7 @@ import { PolicyCreationDialog } from './dashboard/policycreation.dialog';
 import { ClientCreationDialog } from './dashboard/clientcreation.dialog';
 import { LoaderWidget } from './widgets/loader.widget';
 import { InsuranceDataService } from '../services/insurancedata.service';
+import { PolicyAssignmentDialog } from './dashboard/policyassignment.dialog';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { InsuranceDataService } from '../services/insurancedata.service';
     DashboardComponent,
     PolicyCreationDialog,
     ClientCreationDialog,
+    PolicyAssignmentDialog,
     LoaderWidget
   ],
   imports: [
@@ -46,7 +48,8 @@ import { InsuranceDataService } from '../services/insurancedata.service';
   bootstrap: [AppComponent],
   entryComponents: [
     PolicyCreationDialog,
-    ClientCreationDialog
+    ClientCreationDialog,
+    PolicyAssignmentDialog
   ]
 })
 export class AppModule { }

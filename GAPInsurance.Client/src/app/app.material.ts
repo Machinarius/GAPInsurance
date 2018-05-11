@@ -2,8 +2,7 @@ import { MatButtonModule, MatToolbarModule, MatMenuModule,
          MatIconModule, MatSidenavModule, MatProgressBarModule,
          MatCardModule, MatInputModule, MatDialogModule,
          MatSelectModule, MatDatepickerModule, MatNativeDateModule, 
-         MatSnackBarModule, 
-         MatDividerModule} from '@angular/material';
+         MatSnackBarModule, MatDividerModule, MatCheckboxModule} from '@angular/material';
 import { NgModule } from "@angular/core";
 
 let modules = [
@@ -20,7 +19,8 @@ let modules = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatSnackBarModule,
-  MatDividerModule
+  MatDividerModule,
+  MatCheckboxModule
 ];
 
 @NgModule({

@@ -7,6 +7,7 @@ import { InsuranceDataService } from "../../services/insurancedata.service";
 import { Client } from "../../models/client";
 import { AuthService } from "../../services/auth.service";
 import { Router } from "@angular/router";
+import { PolicyAssignmentDialog } from "./policyassignment.dialog";
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -73,48 +74,44 @@ export class DashboardComponent implements OnInit {
     let creationDialog = this.dialog.open(PolicyCreationDialog);
     creationDialog
       .afterClosed()
-      .subscribe(this.onPolicyCreationDialogClosed.apply(this));
-  }
-
-  private onPolicyCreationDialogClosed(dialogResult: any): void {
-    if (!dialogResult) {
-      return;
-    }
-
-    let creationResult = dialogResult.result as PolicyCreationResult;
-    if (creationResult != PolicyCreationResult.Success) {
-      return;
-    }
-
-    let createdPolicy = dialogResult.policy as Policy;
-    this.snackbar.open(`"${createdPolicy.name}" was created successfully`, "OK", {
-      duration: 5000
-    });
-    this.policies.unshift(createdPolicy);
+      .subscribe(dialogResult => {
+        if (!dialogResult) {
+          return;
+        }
+    
+        let creationResult = dialogResult.result as PolicyCreationResult;
+        if (creationResult != PolicyCreationResult.Success) {
+          return;
+        }
+    
+        let createdPolicy = dialogResult.policy as Policy;
+        this.snackbar.open(`"${createdPolicy.name}" was created successfully`, "OK", {
+          duration: 5000
+        });
+        this.policies.unshift(createdPolicy);
+      });
   }
 
   public onCreateClientClicked(): void {
     let creationDialog = this.dialog.open(ClientCreationDialog);
     creationDialog
       .afterClosed()
-      .subscribe(this.onClientCreationDialogClosed.apply(this));
-  }
-
-  private onClientCreationDialogClosed(dialogResult): void {
-    if (!dialogResult) {
-      return;
-    }
-
-    let creationResult = dialogResult.Result as ClientCreationResult;
-    if (creationResult != ClientCreationResult.Success) {
-      return;
-    }
-
-    let createdClient = dialogResult.client as Client;
-    this.snackbar.open(`'${createdClient.name}' was created successfully`, "OK", {
-      duration: 5000
-    });
-    this.clients.unshift(createdClient);
+      .subscribe(dialogResult => {
+        if (!dialogResult) {
+          return;
+        }
+    
+        let creationResult = dialogResult.Result as ClientCreationResult;
+        if (creationResult != ClientCreationResult.Success) {
+          return;
+        }
+    
+        let createdClient = dialogResult.client as Client;
+        this.snackbar.open(`'${createdClient.name}' was created successfully`, "OK", {
+          duration: 5000
+        });
+        this.clients.unshift(createdClient);
+      });
   }
 
   public onDeletePolicyClicked(policy: Policy): void {
@@ -158,6 +155,33 @@ export class DashboardComponent implements OnInit {
   }
 
   public onModifyPoliciesClicked(client: Client): void {
+    if (!this.policies || this.loadingPolicies) {
+      this.snackbar.open("Please wait until the policies have been loaded", "OK", {
+        duration: 1000
+      });
 
+      return;
+    }
+
+    if (this.policies.length == 0) {
+      this.snackbar.open("Please create a policy to continue", "OK", {
+        duration: 1000
+      });
+
+      return;
+    }
+
+    let assignmentDialog = this.dialog.open(PolicyAssignmentDialog, {
+      data: {
+        client: client,
+        policies: this.policies
+      }
+    });
+
+    assignmentDialog
+      .afterClosed()
+      .subscribe(dialogResult => {
+
+      });
   }
 }

@@ -24,11 +24,17 @@ namespace GAPInsurance.Domain.Repositories.EntityFramework.Models {
       ClientCoverages = new List<DBClientCoverage>();
     }
 
-    public Client ToModel() {
-      var appliedPolicies = ClientCoverages
-        .Select(cCoverage => cCoverage.Policy.ToModel())
-        .ToArray()
-        .AsEnumerable();
+    public Client ToModel(bool includePolicies) {
+      IEnumerable<InsurancePolicy> appliedPolicies;
+      if (includePolicies) {
+        appliedPolicies = ClientCoverages
+          .Select(cCoverage => cCoverage.Policy.ToModel(false))
+          .ToArray()
+          .AsEnumerable();
+      } else {
+        appliedPolicies = new InsurancePolicy[0];
+      }
+      
       return new Client(Id, Name, appliedPolicies);
     }
   }

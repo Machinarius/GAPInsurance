@@ -59,8 +59,10 @@ namespace GAPInsurance.Domain.Repositories.EntityFramework {
     public async Task<IEnumerable<Client>> GetAllClientsAsync() {
       var dbClients = await dbContext.Clients
         .Include(client => client.ClientCoverages)
+          .ThenInclude(coverage => coverage.Policy)
+            .ThenInclude(policy => policy.CoveragePercentages)
         .ToListAsync();
-      var clients = dbClients.Select(dbClient => dbClient.ToModel()).ToArray();
+      var clients = dbClients.Select(dbClient => dbClient.ToModel(true)).ToArray();
 
       return clients.AsEnumerable();
     }
@@ -68,9 +70,10 @@ namespace GAPInsurance.Domain.Repositories.EntityFramework {
     public async Task<IEnumerable<InsurancePolicy>> GetAllPoliciesAsync() {
       var dbPolicies = await dbContext.Policies
         .Include(policy => policy.ClientCoverages)
+          .ThenInclude(coverage => coverage.Client)
         .Include(policy => policy.CoveragePercentages)
         .ToListAsync();
-      var policies = dbPolicies.Select(dbPolicy => dbPolicy.ToModel()).ToArray();
+      var policies = dbPolicies.Select(dbPolicy => dbPolicy.ToModel(true)).ToArray();
 
       return policies.AsEnumerable();
     }
@@ -78,12 +81,14 @@ namespace GAPInsurance.Domain.Repositories.EntityFramework {
     public async Task<Client> GetClientAsync(Guid clientId) {
       var dbClient = await dbContext.Clients
         .Include(_client => _client.ClientCoverages)
+          .ThenInclude(_coverage => _coverage.Policy)
+            .ThenInclude(_policy => _policy.CoveragePercentages)
         .FirstOrDefaultAsync(_client => _client.Id == clientId);
       if (dbClient == null) {
         throw new ResourceNotFoundException($"Could not find a client for id {clientId}");
       }
 
-      var client = dbClient.ToModel();
+      var client = dbClient.ToModel(true);
       return client;
     }
 
@@ -96,7 +101,7 @@ namespace GAPInsurance.Domain.Repositories.EntityFramework {
         throw new ResourceNotFoundException($"Could not find a policy for id {policyId}");
       }
 
-      var policy = dbPolicy.ToModel();
+      var policy = dbPolicy.ToModel(true);
       return policy;
     }
 

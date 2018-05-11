@@ -36,16 +36,22 @@ namespace GAPInsurance.Domain.Repositories.EntityFramework.Models {
       }).ToList();
     }
 
-    public InsurancePolicy ToModel() {
+    public InsurancePolicy ToModel(bool includeClients) {
       var percentagesDict = new Dictionary<InsuranceCoverage, float>();
       foreach (var percentage in CoveragePercentages) {
         percentagesDict[percentage.Coverage] = percentage.Percentage;
       }
 
-      var coveredClients = ClientCoverages
-        .Select(cCoverage => cCoverage.Client.ToModel())
-        .ToList()
-        .AsEnumerable();
+      IEnumerable<Client> coveredClients;
+      if (includeClients) {
+        coveredClients = ClientCoverages
+          .Select(cCoverage => cCoverage.Client.ToModel(false))
+          .ToList()
+          .AsEnumerable();
+      } else {
+        coveredClients = new Client[0];
+      }
+      
       return new InsurancePolicy(Id, Name, Description, percentagesDict, CoverageStartDate, CoverageLengthInMonths, PremiumCostInDollars, InsuredRiskLevel, coveredClients);
     }
 
