@@ -16,7 +16,7 @@ export class PolicyCreationDialog {
   public premiumPrice: number;
   public startDate: string;
   public coverageLength: number;
-  public riskLevelId: number;
+  public riskLevelId: string;
   public earthquakeCoverage: number;
   public fireCoverage: number;
   public theftCoverage: number;
@@ -32,6 +32,10 @@ export class PolicyCreationDialog {
     private dialogRef: MatDialogRef<PolicyCreationDialog>,
     @Inject(MAT_DIALOG_DATA) private data: any
   ) {
+    if (!data) {
+      return;
+    }
+
     this.sourcePolicy = data.sourcePolicy as Policy; 
     if (!this.sourcePolicy) {
       return;
@@ -40,13 +44,18 @@ export class PolicyCreationDialog {
     this.name = this.sourcePolicy.name;
     this.description = this.sourcePolicy.description;
     this.premiumPrice = this.sourcePolicy.premiumPrice;
-    this.startDate = this.sourcePolicy.coverageStartDate;
     this.coverageLength = this.sourcePolicy.coverageLength;
-    this.riskLevelId = this.sourcePolicy.riskLevelId;
+    this.riskLevelId = this.sourcePolicy.riskLevelId.toString();
     this.earthquakeCoverage = this.sourcePolicy.earthquakeCoverage;
     this.fireCoverage = this.sourcePolicy.fireCoverage;
     this.theftCoverage = this.sourcePolicy.theftCoverage;
     this.lossCoverage = this.sourcePolicy.lossCoverage;
+
+    let parsedCoverageDate = new Date(Date.parse(this.sourcePolicy.coverageStartDate));
+    let yearString = parsedCoverageDate.getFullYear().toString();
+    let monthString = (parsedCoverageDate.getMonth() + 1).toString().padStart(2, "0");
+    let dayString = parsedCoverageDate.getDate().toString().padStart(2, "0");
+    this.startDate = `${yearString}-${monthString}-${dayString}`;
   }
 
   public onCreateClicked(): void {
@@ -54,7 +63,7 @@ export class PolicyCreationDialog {
     this.creationError = false;
 
     let request = new PolicyCreationRequest(this.name, this.description,
-      this.premiumPrice, this.startDate, this.coverageLength, this.riskLevelId,
+      this.premiumPrice, this.startDate, this.coverageLength, parseInt(this.riskLevelId),
       this.earthquakeCoverage, this.fireCoverage, this.theftCoverage, this.lossCoverage);
 
     var jobObservable: Observable<Policy>;

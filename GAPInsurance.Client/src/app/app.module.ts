@@ -12,7 +12,7 @@ import { EntryPointComponent } from './entrypoint/entrypoint.component';
 import { NotFoundComponent } from './notfound/notfound.component';
 import { AuthService, BearerHttpInterceptor } from '../services/auth.service';
 import { AuthCallbackComponent } from './authcallback/authcallback.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent, RiskLevelPipe } from './dashboard/dashboard.component';
 import { PolicyCreationDialog } from './dashboard/policycreation.dialog';
 import { ClientCreationDialog } from './dashboard/clientcreation.dialog';
 import { LoaderWidget } from './widgets/loader.widget';
@@ -30,7 +30,8 @@ import { PolicyAssignmentDialog } from './dashboard/policyassignment.dialog';
     PolicyCreationDialog,
     ClientCreationDialog,
     PolicyAssignmentDialog,
-    LoaderWidget
+    LoaderWidget,
+    RiskLevelPipe
   ],
   imports: [
     BrowserModule,

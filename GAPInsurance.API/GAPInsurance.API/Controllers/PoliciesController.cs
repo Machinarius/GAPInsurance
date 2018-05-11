@@ -152,7 +152,8 @@ namespace GAPInsurance.API.Controllers {
       }
 
       var updatedPolicy = await insuranceService.UpdatePolicyAsync(policyId, request.Name, request.Description, request.PremiumPrice);
-      return Ok(updatedPolicy);
+      var response = new PolicyResponse(updatedPolicy);
+      return Ok(response);
     }
   }
 }

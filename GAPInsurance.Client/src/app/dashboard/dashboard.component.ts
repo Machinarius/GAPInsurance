@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnInit } from "@angular/core";
+import { Component, ViewChild, ElementRef, OnInit, PipeTransform } from "@angular/core";
 import { MatDialog, MatSnackBar } from "@angular/material";
 import { PolicyCreationDialog, PolicyCreationResult } from "./policycreation.dialog";
 import { ClientCreationDialog, ClientCreationResult } from "./clientcreation.dialog";
@@ -8,6 +8,7 @@ import { Client } from "../../models/client";
 import { AuthService } from "../../services/auth.service";
 import { Router } from "@angular/router";
 import { PolicyAssignmentDialog, PolicyAssignmentResult } from "./policyassignment.dialog";
+import { Pipe } from "@angular/core";
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -182,6 +183,8 @@ export class DashboardComponent implements OnInit {
         
         let policyIndex = this.policies.indexOf(policy);
         this.policies[policyIndex] = updatedPolicy;
+        // TODO: Update the clients in-place instead of reloading them
+        this.loadClients();
       });
   }
 
@@ -260,5 +263,28 @@ export class DashboardComponent implements OnInit {
           duration: 5000
         });
       });
+  }
+}
+
+@Pipe({ 
+  name: 'riskLevel' 
+})
+export class RiskLevelPipe implements PipeTransform {
+  transform(value: any, ...args: any[]) {
+    let riskLevelId = value as number;
+    switch(riskLevelId) {
+      case 0:
+        return 'None';
+      case 1:
+        return 'Low';
+      case 2:
+        return 'Medium';
+      case 3:
+        return 'Medium High';
+      case 4:
+        return 'High';
+    }
+
+    return 'Unknown';
   }
 }
