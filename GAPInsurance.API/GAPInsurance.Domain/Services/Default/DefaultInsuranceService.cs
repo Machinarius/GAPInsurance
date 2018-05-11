@@ -133,7 +133,7 @@ namespace GAPInsurance.Domain.Services.Default {
 
     public async Task RemovePolicyFromClientAsync(Guid policyId, Guid clientId) {
       var policy = await dataRepository.GetPolicyAsync(policyId);
-      if (policy.CoveredClients.Any(client => client.Id == clientId)) {
+      if (!policy.CoveredClients.Any(client => client.Id == clientId)) {
         return;
       }
 

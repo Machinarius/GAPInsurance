@@ -7,7 +7,7 @@ import { InsuranceDataService } from "../../services/insurancedata.service";
 import { Client } from "../../models/client";
 import { AuthService } from "../../services/auth.service";
 import { Router } from "@angular/router";
-import { PolicyAssignmentDialog } from "./policyassignment.dialog";
+import { PolicyAssignmentDialog, PolicyAssignmentResult } from "./policyassignment.dialog";
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -181,7 +181,30 @@ export class DashboardComponent implements OnInit {
     assignmentDialog
       .afterClosed()
       .subscribe(dialogResult => {
+        if (!dialogResult) {
+          return;
+        }
 
+        let assignmentResult = dialogResult.result as PolicyAssignmentResult;
+        if (assignmentResult != PolicyAssignmentResult.Success) {
+          return;
+        }
+
+        let clientResult = dialogResult.client as Client;
+        let clientIndex = this.clients.indexOf(client);
+        this.clients[clientIndex] = clientResult;
+        this.loadPolicies();
+        
+        /*
+        this.policies.forEach(policy => {
+          let matchingClientPolicies = clientResult.assignedPolicies
+            .map((p, index) => { return { policy: p, index: index }})
+            .filter(p => p.policy.id == policy.id);
+          let matchingPolicyClients = policy.coveredClients
+            .map((c, index) => { return { client: c, index: index }})
+            .filter(c => c.client.id == clientResult.id);
+        });
+        */
       });
   }
 }

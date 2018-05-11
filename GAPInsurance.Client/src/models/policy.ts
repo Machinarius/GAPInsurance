@@ -10,5 +10,10 @@ export interface Policy {
   fireCoverage: number,
   theftCoverage: number,
   lossCoverage: number,
-  coveredClients: string[]
+  coveredClients: ClientValue[]
+}
+
+interface ClientValue {
+  id: string,
+  name: string
 }

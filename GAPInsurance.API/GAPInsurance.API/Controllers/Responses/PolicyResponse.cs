@@ -16,7 +16,7 @@ namespace GAPInsurance.API.Controllers.Responses {
     public float FireCoverage { get; set; }
     public float TheftCoverage { get; set; }
     public float LossCoverage { get; set; }
-    public IEnumerable<string> CoveredClients { get; set; }
+    public IEnumerable<ClientValue> CoveredClients { get; set; }
 
     public PolicyResponse() { }
 
@@ -50,7 +50,23 @@ namespace GAPInsurance.API.Controllers.Responses {
         }
       }
 
-      CoveredClients = model.CoveredClients.Select(client => client.Name).ToArray();
+      CoveredClients = model.CoveredClients.Select(client => new ClientValue(client)).ToArray();
+    }
+
+    public class ClientValue {
+      public string Id { get; set; }
+      public string Name { get; set; }
+
+      public ClientValue() { }
+
+      public ClientValue(Client client) {
+        if (client == null) {
+          throw new ArgumentNullException(nameof(client));
+        }
+
+        Id = client.Id.ToString();
+        Name = client.Name;
+      }
     }
   }
 }
